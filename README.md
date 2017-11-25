@@ -18,7 +18,7 @@ clone and do setup.py install.
 
 Install deps listed in requirements.txt if not already installed then
 
-Check usage: magnet2torrent -h
+Check usage: gnasnomer -h
 
 Runs on GNU/Linux and you need the serial pollution sensor (SDS family)
 Optionally, if you stick a GPS device and run the gpsd daemon, it will also gather
