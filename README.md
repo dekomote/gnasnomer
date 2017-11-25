@@ -23,3 +23,11 @@ Check usage: gnasnomer -h
 Runs on GNU/Linux and you need the serial pollution sensor (SDS family)
 Optionally, if you stick a GPS device and run the gpsd daemon, it will also gather
 and post GPS coordinates as to where the reading was done.
+
+To run the GPSd:
+
+    sudo gpsd -n -N -D 5 /dev/ttyXXXX
+
+Usually, it's /dev/ttyACM0.
+
+Omit -n if you want less polling.

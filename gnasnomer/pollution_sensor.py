@@ -1,14 +1,15 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -
+
+from __future__ import print_function, unicode_literals
 import os
 import logging
 import struct
 import serial
+from .utils import bytes2int
 
 
 logger = logging.getLogger(__name__)
-
-
-def bytes2int(bytes):
-    return struct.unpack("B", bytes)[0]
 
 
 class PollutionSensor(object):
@@ -66,20 +67,17 @@ class PollutionSensor(object):
             try:
                 while not read_full:
                     if self.serial.read() == b'\xaa':
-                        logger.debug("FIRST HEADER GOOD")
                         # FIRST HEADER IS GOOD
                         if self.serial.read() == b'\xc0':
                             # SECOND HEADER IS GOOD
-                            logger.debug("SECOND HEADER GOOD")
                             for i in range(8):
                                 byte = self.serial.read()
                                 data.append(bytes2int(byte))
 
                             if data[-1] == 171:
                                 # END BYTE IS GOOD. DO CRC AND CALCULATE
-                                logger.debug("END BYTE GOOD")
                                 if data[6] == sum(data[0:6])%256:
-                                    logger.debug("CRC GOOD")
+                                    logger.debug("CRC good")
                                 pm25 = (data[0]+data[1]*256)/10
                                 pm10 = (data[4]+data[3]*256)/10
                                 read_full = True
@@ -89,8 +87,8 @@ class PollutionSensor(object):
             logger.info("PM 10: %s" % pm10)
             logger.info("PM 2.5: %s" % pm25)
             return {
-                "PM10": pm10,
-                "PM25": pm25,
+                "pm10": pm10,
+                "pm25": pm25,
             }
 
     def __del__(self):

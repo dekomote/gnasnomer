@@ -25,6 +25,7 @@ setup(
     install_requires=[
         "requests",
         "pyserial",
+        "gps3",
     ],
     entry_points="""
     [console_scripts]
