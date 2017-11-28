@@ -67,7 +67,7 @@ def run():
                         gps_data.update(ps_data)
                         logger.debug("Data Ready to be sent: %s", gps_data)
                         if args.url:
-                            r = requests.post(args.url, data=gps_data)
+                            r = requests.post(args.url, json=gps_data)
                             logger.info("Server responded %s" % r.status_code)
                             if not r.ok:
                                 logger.error("Server response:")
