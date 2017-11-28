@@ -24,6 +24,8 @@ def setup_args():
     parser.add_argument("-g", "--gpsd_host", help="GPSd host address", default="127.0.0.1")
     parser.add_argument("-p", "--gpsd_port", help="GPSd host port", default=2947)
     parser.add_argument("-j", "--gpsd_protocol", help="GPSd protocol", default="json")
+    parser.add_argument("--skip_gps", help="Don't wait for GPS info to report pollution",
+        action='store_true')
     parser.add_argument("-t", help="Pause for t seconds before reading the sensors",
         default=5, type=int)
     parser.add_argument("-u", "--url", 
@@ -58,7 +60,7 @@ def run():
                     data_stream.unpack(new_data)
                     gps_data = cleanup_gps_dict(data_stream.TPV)
                     logger.debug("GPS reports %s", gps_data)
-                    if gps_data.get('lat') or True:
+                    if (gps_data.get('lat') and gps_data.get('lon')) or args.skip_gps:
                         ps_data = pollution_sensor.read()
                         if not ps_data:
                             continue
